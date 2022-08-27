@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "maintenances",
+  "info": {
+    "singularName": "maintenance",
+    "pluralName": "maintenances",
+    "displayName": "Maintenance",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Feature": {
+      "type": "string"
+    },
+    "state": {
+      "type": "boolean"
+    },
+    "stateDescription": {
+      "type": "string"
+    },
+    "shouldBeReplace": {
+      "type": "string"
+    },
+    "expenses": {
+      "type": "float"
+    },
+    "room": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::room.room",
+      "inversedBy": "maintenances"
+    }
+  }
+}

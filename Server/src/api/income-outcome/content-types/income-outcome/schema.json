@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "income_outcomes",
+  "info": {
+    "singularName": "income-outcome",
+    "pluralName": "income-outcomes",
+    "displayName": "income-outcome",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "year": {
+      "type": "string"
+    },
+    "month": {
+      "type": "string"
+    },
+    "income": {
+      "type": "float"
+    },
+    "outcome": {
+      "type": "float"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "income_outcomes"
+    }
+  }
+}
