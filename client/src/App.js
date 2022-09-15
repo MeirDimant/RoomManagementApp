@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import Login from "./Components/Login";
-import MainPage from "./Components/MainPage";
+import LoginPage from "./Pages/LoginPage";
+import MainPage from "./Pages/MainPage";
+import { Routes, Route } from "react-router-dom";
+import Orders from "./Pages/Orders";
 import "./App.css";
 
 function App() {
@@ -22,11 +24,11 @@ function App() {
 
   return (
     <div className="App">
-      {!isUserSignedIn ? (
-        <Login onLoginSuccessful={onLoginSuccessful} />
-      ) : (
-        <MainPage />
-      )}
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/calendar" element={<Orders />} />
+      </Routes>
     </div>
   );
 }
