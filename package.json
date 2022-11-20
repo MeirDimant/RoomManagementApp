@@ -1,0 +1,25 @@
+{
+  "name": "roommanagementapp",
+  "version": "1.0.0",
+  "description": "An app to manage rental rooms",
+  "main": "index.js",
+  "scripts": {
+    "server": "cd Server && npm run develop",
+    "client": "cd client && npm start",
+    "server-client": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MeirDimant/RoomManagementApp.git"
+  },
+  "author": "Meir Dimant and Adiel Elmakis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MeirDimant/RoomManagementApp/issues"
+  },
+  "homepage": "https://github.com/MeirDimant/RoomManagementApp#readme",
+  "dependencies": {
+    "concurrently": "^7.5.0"
+  }
+}
