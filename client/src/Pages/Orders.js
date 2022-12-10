@@ -1,10 +1,11 @@
-import { Calendar } from "react-date-range";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css";
+import { DateRange } from "react-date-range";
 import { useState, useEffect } from "react";
 import { getContent, getEntity } from "../API/content";
+import { Box, Button, Typography } from "@mui/material";
 
 export default function Orders() {
-  const [oneDate, setOneDate] = useState(new Date());
-  const [date, setDate] = useState([new Date(), new Date()]);
   const [roomsNums, setRoomsNums] = useState([]);
   const [error, setError] = useState(undefined);
   const [selectedRoom, setSelectedRoom] = useState(undefined);
@@ -15,6 +16,9 @@ export default function Orders() {
       const response = await getContent("rooms");
       if (response && response.data) {
         setRoomsNums(response.data);
+        if (response.data.length > 0) {
+          setSelectedRoom(response.data[0]);
+        }
       } else {
         setError(response);
       }
@@ -36,7 +40,14 @@ export default function Orders() {
         response.data.attributes.orders &&
         response.data.attributes.orders.data
       ) {
-        setOrders(response.data.attributes.orders.data);
+        const orders = response.data.attributes.orders.data;
+        setOrders(
+          orders.map((order) => ({
+            startDate: new Date(order.attributes.checkIn),
+            endDate: new Date(order.attributes.checkOut),
+            key: "" + order.id,
+          }))
+        );
       } else {
         setError(response);
       }
@@ -50,29 +61,42 @@ export default function Orders() {
 
   return (
     <div className="orders">
-      <h1 className="header">All orders</h1>
-      {roomsNums && (
-        <div>
-          <p>
-            Rooms:
-            {roomsNums.map((room, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setSelectedRoom(room);
-                }}
-              >
-                {room.attributes.RoomNum}
-              </button>
-            ))}
-          </p>
-        </div>
-      )}
+      <Typography sx={{ mt: 2 }} variant="h3" component="div">
+        All orders
+      </Typography>
 
       <div className="calendar-container">
-        <Calendar date={oneDate} onChange={setOneDate} />
+        <DateRange
+          showSelectionPreview={false}
+          showDateDisplay={false}
+          ranges={orders}
+          onChange={() => {}}
+        />
       </div>
-      <div className="text-center">Selected date: {oneDate.toDateString()}</div>
+      {roomsNums && (
+        <Box sx={{ "& .MuiButton-root": { ml: 1 } }}>
+          <Typography
+            sx={{ mb: 1, textDecoration: "underline" }}
+            variant="h6"
+            component="div"
+          >
+            Rooms
+          </Typography>
+
+          {roomsNums.map((room, index) => (
+            <Button
+              key={index}
+              variant="outlined"
+              size="medium"
+              onClick={() => {
+                setSelectedRoom(room);
+              }}
+            >
+              {room.attributes.RoomNum}
+            </Button>
+          ))}
+        </Box>
+      )}
     </div>
   );
 }
