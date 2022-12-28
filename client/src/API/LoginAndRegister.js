@@ -6,8 +6,26 @@ export async function login(identifier, password) {
       identifier,
       password,
     });
-    return response;
+    return response.data;
   } catch (error) {
-    return error.response.data.error.message;
+    if (error.response?.data?.error) {
+      return error.response.data.error;
+    }
+    return { message: "Somthing went wrong!!" };
+  }
+}
+
+export async function getMe() {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get("api/users/me", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response?.data?.error) {
+      return error.response.data.error;
+    }
+    return { message: "Somthing went wrong!!" };
   }
 }

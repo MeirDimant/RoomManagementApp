@@ -1,12 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { login } from "../API/LoginAndRegister.js";
 import { useState } from "react";
 import { Box, Button, TextField, Typography, Alert } from "@mui/material";
+import { useAuthContext } from "../Contexts/AuthContext";
 
 export default function Login({ onLoginSuccessful }) {
   const [alert, setAlert] = useState(undefined);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const { setUser, setIsAuthenticated } = useAuthContext();
+  const navigate = useNavigate();
 
   const showAlert = (alert) => {
     setAlert(alert);
@@ -22,15 +26,16 @@ export default function Login({ onLoginSuccessful }) {
     event.preventDefault();
 
     if (userName && password) {
-      const loginResult = await login(userName, password);
-      if (loginResult.data) {
-        const { user, jwt } = loginResult.data;
-        // Save user IDs on local storage
-        localStorage.setItem("name", user.username);
+      setIsAuthenticated(null);
+      const { user, jwt, message } = await login(userName, password);
+      if (user && jwt) {
+        setUser(user);
+        setIsAuthenticated(true);
         localStorage.setItem("token", jwt);
-        onLoginSuccessful();
+        navigate("/", { replace: true });
       } else {
-        showAlert({ message: loginResult });
+        showAlert({ message });
+        setIsAuthenticated(false);
       }
     } else {
       return;

@@ -1,33 +1,20 @@
-import { useEffect, useState } from "react";
 import LoginPage from "./Pages/LoginPage";
 import MainPage from "./Pages/MainPage";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Orders from "./Pages/Orders";
 import "./App.css";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
 function App() {
-  const [isUserSignedIn, setIsUserSignedIn] = useState(false);
-  useEffect(() => {
-    if (localStorage.getItem("token")) setIsUserSignedIn(true);
-    else setIsUserSignedIn(false);
-  }, []);
-
-  const onLoginSuccessful = () => {
-    setIsUserSignedIn(true);
-  };
-
-  const onLogout = () => {
-    localStorage.removeItem("name");
-    localStorage.removeItem("token");
-    setIsUserSignedIn(false);
-  };
-
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<MainPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<Navigate to="/home-page" />} />
+          <Route path="/home-page" element={<MainPage />} />
+          <Route path="/calendar" element={<Orders />} />
+        </Route>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/calendar" element={<Orders />} />
       </Routes>
     </div>
   );
