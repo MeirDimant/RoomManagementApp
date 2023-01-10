@@ -2,7 +2,7 @@ import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css";
 import { DateRange } from "react-date-range";
 import { useState, useEffect } from "react";
-import { getContent, getEntity } from "../API/content";
+import { getContent, getEntity } from "../../API/content";
 import { Box, Button, Typography } from "@mui/material";
 
 export default function Orders() {

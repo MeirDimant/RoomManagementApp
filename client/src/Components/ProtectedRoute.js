@@ -5,7 +5,6 @@ import { CircularProgress } from "@mui/material";
 const ProtectedRoute = () => {
   const { isAuthenticated } = useAuthContext();
   if (isAuthenticated == null) {
-    console.log(isAuthenticated);
     return <CircularProgress />;
   }
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
